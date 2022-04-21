@@ -1,0 +1,42 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.flex-container{
+    display: flex;
+    background-color: #f4f4f4;
+    /* justify-content: end; /* the spacing between contents or can send them
+    all to the right, always on main access
+    align-items: center; align content to the center, always on cross axis */
+}
+
+.item{
+    width: 100px;
+    height: 100px;
+    background: #83251f;
+    color: white;
+    margin: 10px;
+
+    display: flex;
+    justify-content: center; /*horizontal*/
+    align-items: center; /* vertical*/
+}
+
+/* instead of making class item 1, item 2, item 3, use nth-of-type
+and increase height that can fit the content
+BUT NOW SIMPLIFIED WITH FLEX-DIRECTION
+.item:nth-of-type(1){
+    align-self: start;
+}
+.item:nth-of-type(2) {
+    align-self: center;
+}
+.item:nth-of-type(3) {
+    align-self: end;
+} */
