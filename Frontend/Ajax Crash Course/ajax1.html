@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax Crash Course</title>
+</head>
+<body>
+    <h2>With Ajax, web applications can send and retrieve data from a server asynchronously</h2>
+    <button id="button">Get Text File</button>
+    <br>
+    <div id="text"></div>
+
+    <script>
+        document.getElementById('button').addEventListener
+        ('click', loadText);
+
+        function loadText(){
+            // create XHR object (XMLHttpRequest)
+            var xhr = new XMLHttpRequest();
+            // open - type, url/file, async
+            xhr.open('GET', 'sample.txt', true);
+            
+            //
+            xhr.onload = function(){
+                if(xhr.status == 200) { // the OK request
+                    // console.log(this.responseText);
+                    document.getElementById('text').innerHTML = this.responseText;
+            } // nothing will happen except if you add send()
+            // if you change the sample.txt to sample2.txt (which's non existent)
+            // the status will be 404
+            else if(xhr.status == 404) {
+                document.getElementById('text').innerHTML = 'Error 404, not found';
+            }
+        }
+
+        // error handler
+        xhr.onerror = function(){
+            console.log('Requesting error...');
+        }
+        // sends request
+        xhr.send();
+    }
+    </script>
+</body>
+</html>
