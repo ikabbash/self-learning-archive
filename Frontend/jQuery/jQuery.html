@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            font-size: 17px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f4f4;
+            line-height: 1.5em;
+        }
+        header{
+            background: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px #000 solid;
+            margin-bottom: 10px;
+        }
+        #container{
+            width: 90%;
+            margin: auto;
+            padding: 10px;
+        }
+    </style>
+
+
+</head>
+<body>
+    <header>
+        <h1>jQuery Crash Course | Events</h1>
+    </header>
+    <div id="container">
+        <h3>Mouse Events</h3>
+        <button id="btn1">Button 1</button>
+        <button id="btn2">Button 2</button>
+        <p class="para1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit sit voluptatibus maxime atque</p>
+        <h3 id="coords"></h3>
+        <hr>
+        <form id="form">
+            <label>Name</label><br>
+            <input type="text" name="name" id="name"><br>
+            <label>Email</label><br>
+            <input type="text" name="email" id="email"><br>
+            <label>Gender</label><br>
+            <select name="gender" id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            <br>
+            <input type="submit" value="Submit"><br>
+        </form>
+        <ul></ul>
+    </div>    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // $('#btn1').click(function(){
+        //     alert('Clicked');
+        // });
+        //// BOTH .click and .on work
+        // $('#btn1').on('click', function(){
+        //     alert('Clicked');
+        // })
+
+        // Show and hide
+        // $('#btn1').click(function(){
+        //     $('.para1').hide();
+        // })
+        // $('#btn2').click(function () {
+        //     $('.para1').show();
+        // })
+
+        // double click and toggle
+        // $('#btn1').dblclick(function(){
+        //     $('.para1').toggle();
+        // })
+
+        // $('#btn1').hover(function () {
+        //         $('.para1').toggle();
+        //     })
+
+        // mouse up and down (as long as you're clicking it's hidden)
+        // $('#btn1').mouseup(function(){
+        //     $('.para1').toggle();
+        // })
+        // $('#btn1').mousedown(function () {
+        //     $('.para1').toggle();
+        // })
+
+        // access data of the event
+        // $('#btn2').on('click', function(event){
+        //     alert(event.currentTarget.outerHTML);
+        //     alert(event.currentTarget)
+        // })
+
+        // show coordinates on the HTML (don't append it)
+        $(document).on('mousemove', function(event){
+            $('#coords').html('Coords: Y: ' + event.clientY + ' X: ' + event.clientX);
+        });
+
+        // focus is where you click into an event
+        // like clicking on the text box of any input like below
+        // can be used to change field color to know that you're in that field
+        $('input').focus(function(){
+            // $('input#name').css('background', 'azure'); <-- only selects name
+            // $('input').css('background', 'azure'); <-- will do all inputs at once no matter where you click
+            $(this).css('background', 'azure'); // <-- any input will be affected but not the other
+        })
+        // back to normal
+        $('input').blur(function () {
+            $(this).css('background', 'white');
+        })
+
+        $('input').keyup(function(evemt){
+            console.log(event.target.value);
+            // key strokes record
+        })
+
+        // the selector
+        $('select#gender').change(function(event){
+            alert(event.target.value);
+        })
+
+        // submit event, now we're delaing with the form itself
+        $('#form').submit(function(e){
+            e.preventDefault(); // to not refresh the name
+            var name = $('input#name').val();
+            console.log(name);
+        })
+
+
+        // DOM Manipulation
+        $('#name').keyup(function(event){
+            // code is something similar to the ASCII value of
+            // key strokes, for example the value of Enter
+            // button is 13 and we'll use it
+            var code = event.which;
+            if(code==13){
+                event.preventDefault(); // to prevent refresh
+                $('#container').append('<li>'+event.target.value+'</li>');
+                // once you press enter it'll show
+            }
+        })
+
+    </script>
+</body>
+</html>
