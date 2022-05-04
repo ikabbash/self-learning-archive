@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"/>
+    <title>Digital Clockwork</title>
+</head>
+<body>
+    <div id="time">
+        <div class="circle" style="--clr: rgb(160, 75, 177);">
+            <svg>
+                <circle cx="70" cy="70" r="70"></circle>
+            </svg>
+            <div id="hours">00</div>
+        </div>
+        <div class="circle" style="--clr: rgb(51, 59, 180);">
+            <svg>
+                <circle cx="70" cy="70" r="70"></circle>
+            </svg>
+            <div id="minutes">00</div>
+        </div>
+        <div class="circle" style="--clr: rgb(61, 202, 160);">
+            <svg>
+                <circle cx="70" cy="70" r="70"></circle>
+            </svg>
+            <div id="seconds">00</div>
+        </div>
+        <div class="ap">
+            <div id="ampm">AM</div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="main.js" charset="utf-8"></script>
+</body>
+</html>
+
+
+<!--Video credit: https://www.youtube.com/watch?v=eoSfzVz9ur0&list=PL-YEuGGQxAvDzCyOR2z9lGYVaTcq1vWdb-->
