@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>    
+    <title>Navbar</title>
+    <!--Credit: https://www.youtube.com/watch?v=3PHXvlpOkf4&list=PL-YEuGGQxAvDzCyOR2z9lGYVaTcq1vWdb&index=4-->
+</head>
+<body>
+    <nav>
+        <div class="nav-center">
+            <!-- Nav header-->
+            <div class="nav-header">
+                <img src="logo.svg" class="logo" alt="logo">
+                <button class="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+    <!-- links -->
+        <ul class="links">
+            <li>
+            <a href="index.html">home</a>
+            </li>
+            <li>
+            <a href="about.html">about</a>
+            </li>
+            <li>
+            <a href="projects.html">projects</a>
+            </li>
+            <li>
+            <a href="contact.html">contact</a>
+            </li>
+        </ul>
+        <!-- social media -->
+        <ul class="social-icons">
+            <li>
+            <a href="https://www.twitter.com">
+                <i class="fab fa-facebook"></i>
+            </a>
+            </li>
+            <li>
+            <a href="https://www.twitter.com">
+                <i class="fab fa-twitter"></i>
+            </a>
+            </li>
+            <li>
+            <a href="https://www.twitter.com">
+                <i class="fab fa-behance"></i>
+            </a>
+            </li>
+            <li>
+            <a href="https://www.twitter.com">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            </li>
+            <li>
+            <a href="https://www.twitter.com">
+                <i class="fab fa-sketch"></i>
+            </a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+
+
+    <script>
+        // The whole idea here is to remove the link show-links
+        // class then the links will disappear
+
+        const navToggle = document.querySelector('.nav-toggle');
+        const links = document.querySelector('.links');
+
+        navToggle.addEventListener('click', function(){
+            // classList shows all classes
+            // contains() is a function that checks if there's a certain
+            // class in the list
+
+            // if(links.classList.contains('show-links')){
+            //     links.classList.remove('show-links');
+            // }
+            // else{
+            //     links.classList.add('show-links');
+            // }
+
+            // One liner version of this
+            links.classList.toggle("show-links");
+
+            // watch out for the height of the links, look
+            // at it in the styles in the links class (height: auto)
+        })
+    </script>
+</body>
+</html>
