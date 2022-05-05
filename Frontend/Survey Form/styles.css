@@ -1,0 +1,44 @@
+body{
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    background-color: #130806;
+	color: #f5f6f7;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+	font-size: 16px;
+}
+
+h1, p{
+    text-align: center;
+}
+
+fieldset {
+    border: none;
+    padding: 1.5rem 0;
+}
+
+fieldset:not(:last-of-type) {
+    border-bottom: 2px solid #66d494;
+}
+
+label:not(.inline) {
+    display: block;
+    margin: 1.3rem 0;
+}
+
+#name-label, #email-label, #number-label{
+    display: inline;
+}
+
+#dropdown, textarea{
+    display: block;
+}
+
+input[type="submit"]{
+    display: block;
+    width: 30%;
+    margin: 1em auto;
+    height: 2em;
+    font-size: 1.1rem;
+    background-color: #66d494;
+}
