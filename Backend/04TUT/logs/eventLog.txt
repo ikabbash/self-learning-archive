@@ -1,0 +1,5 @@
+16/10/2022	19:28:48	d588db40-d0af-4a5f-af89-f22c87c4f5f3	Log event emitted!
+16/10/2022	19:28:52	5e86e385-d36a-4bed-8322-0335b84e66a1	Log event emitted!
+16/10/2022	19:30:10	7c919c98-2258-4818-86d7-1a0ece47c45c	Log event emitted!
+16/10/2022	19:44:46	6c26a822-3b57-4141-9a73-e6efd92224b2	Log event emitted!
+16/10/2022	19:46:01	357fbc15-f3f6-43fd-9dd9-b08cbeeec796	Log event emitted!
