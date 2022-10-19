@@ -1,0 +1,14 @@
+20221018	19:25:43	1175a1b2-a07f-43b1-a968-f4aaedf5f672	GET	undefined	/
+20221018	19:29:39	5eb541b6-54d0-4021-8c5b-77ea1395173b	GET	undefined	/kmgoldg
+20221018	19:33:54	3c265240-54a4-48de-b59d-84e4b9cbd63c	GET	https://www.google.com	/
+20221018	19:34:07	89d3972a-fc16-4e80-9187-42df9bf5f08a	GET	https://www.google.com	/old-page
+20221018	19:34:07	19ecd3c9-1b6a-46e4-af4d-91c2d927c884	GET	https://www.google.com	/new-page.html
+20221018	19:39:10	2d57291c-01eb-4ea0-ad01-105843d3df97	GET	https://www.google.com	/new-page.html
+20221018	19:42:36	6176ef02-c64b-4582-80f1-6c722a92f4c7	GET	undefined	/
+20221018	19:43:12	9fd4cdbf-5262-42bd-9ff1-045a982677a7	GET	undefined	/
+20221018	19:43:13	e9435e0c-4f20-46cd-a9aa-c01227c6252e	GET	undefined	/favicon.ico
+20221018	19:47:04	e74dcd86-7072-4a8d-a413-a136430d126d	GET	undefined	/
+20221018	19:47:04	f2abeaae-5926-49d0-833f-6dd2224050f0	GET	undefined	/favicon.ico
+20221018	19:47:16	e950d60a-05b0-4edd-826b-a1d1019298f7	GET	undefined	/
+20221018	19:47:16	669cf05d-e000-4706-b3e3-e6b1c5d29d76	GET	undefined	/favicon.ico
+20221018	19:49:41	a1e7a321-2627-484c-9987-c6f2a2ec17ab	GET	undefined	/gjfdol
