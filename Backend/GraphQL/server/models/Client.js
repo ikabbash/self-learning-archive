@@ -1,4 +1,4 @@
-const mongoose = reuqire('mongoose');
+const mongoose = require('mongoose');
 // mongoose schema is NOT related to a GraphQL
 // imagine it like this: database, then on top of it
 // the mongoose layer (object data map) where you create schema
