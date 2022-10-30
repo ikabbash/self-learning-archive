@@ -2,7 +2,8 @@ import { FaTrash } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import { DELETE_CLIENT } from '../mutations/clientMutations';
 import { GET_CLIENTS } from '../queries/clientQueries';
-// probs
+import { GET_PROJECTS } from '../queries/projectQueries';
+
 export default function ClientRow({ client }) {
   
   // note to self: for buttons to be able to use functions
@@ -11,17 +12,20 @@ export default function ClientRow({ client }) {
     variables: { id: client.id },
     // refetchQueries: [{ query: GET_CLIENTS }] but not recommended, slows app
     
-    // update function that passes in cache then sets data to
-    // the response of the deleteClient (which returns id, name, emial and phone)
-    update(cache, {data: { deleteClient}}) { 
-      // will get the query from the cache instead of making whole new request
-      const { clients } = cache.readQuery({ query: GET_CLIENTS});
-      cache.writeQuery({
-        query: GET_CLIENTS,
-        // filter to the ID of what we wanted to delete
-        data: { clients: clients.filter(client => client.id !== deleteClient.id )},
-      });
-    }
+    // THIS WAS USED INSTEAD OF BELOW DUE TO NOT WANTING TO ADD ANOTHER QUERY
+    refetchQueries: [{ query: GET_CLIENTS }, { query: GET_PROJECTS }],
+
+    // // update function that passes in cache then sets data to
+    // // the response of the deleteClient (which returns id, name, emial and phone)
+    // update(cache, {data: { deleteClient}}) { 
+    //   // will get the query from the cache instead of making whole new request
+    //   const { clients } = cache.readQuery({ query: GET_CLIENTS});
+    //   cache.writeQuery({
+    //     query: GET_CLIENTS,
+    //     // filter to the ID of what we wanted to delete
+    //     data: { clients: clients.filter(client => client.id !== deleteClient.id )},
+    //   });
+    // }
   });
 
   return (

@@ -42,7 +42,7 @@ export default function AddClientModal() {
         <>
         <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-secondary"
             data-bs-toggle="modal"
             data-bs-target="#ClientModal"
         >
@@ -78,19 +78,19 @@ export default function AddClientModal() {
                             <label className="form-label">Name</label>
                             {/* the value needs to be connected to a piece of state */}
                             <input id="name" type="text" className="form-control"
-                            vlaue={name} onChange={(e) => setName(e.target.value)} />
+                            value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Email</label>
                             {/* the value needs to be connected to a piece of state */}
                             <input id="email" type="email" className="form-control"
-                            vlaue={email} onChange={(e) => setEmail(e.target.value)} />
+                            value={email} onChange={(e) => setEmail(e.target.value)} />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Phone</label>
                             {/* the value needs to be connected to a piece of state */}
                             <input id="phone" type="text" className="form-control"
-                            vlaue={phone} onChange={(e) => setPhone(e.target.value)} />
+                            value={phone} onChange={(e) => setPhone(e.target.value)} />
                         </div>
                         {/* data-bs-dismiss="modal" so when it's submitted it closes */}
                         <button type="submit" data-bs-dismiss="modal" className="btn btn-secondary">Submit</button>

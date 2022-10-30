@@ -4,9 +4,10 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 // we'll also use cache since we want the client to be shown
 // right away in the list with no need of reloading the page
 
-import Clients from "./components/Clients";
-import AddClientModal from "./components/AddClientModal";
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import Project from './pages/Project';
 
 // to avoid getting the following error when using deleteClient:
 //  "Cache data may be lost when replacing the clients field of a Query object"
@@ -40,11 +41,18 @@ function App() {
   return (
   <>
   <ApolloProvider client={client}>
+    <Router>
     <Header />
+
       <div className="container">
-        <AddClientModal />
-        <Clients />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/projects/:id' element={<Project />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
       </div>
+
+    </Router>
   </ApolloProvider>
   </>
   );
