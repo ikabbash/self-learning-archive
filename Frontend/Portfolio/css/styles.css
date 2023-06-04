@@ -1,0 +1,118 @@
+body {
+  text-align: center;
+  margin: 0;
+  font-family: verdana, sans-serif;
+  color: #40514e;
+}
+
+h1 {
+  margin: 50px auto 0 auto;
+  font-size: 5.625rem;
+  font-family: "Sacramento", cursive;
+  color: #66bfb6;
+  line-height: 2;
+}
+
+h2 {
+  margin: 0 auto;
+  font-size: 2.5rem;
+  font-weight: normal;
+  margin-top: 10px;
+  color: #66bfb6;
+  padding-bottom: 10px;
+}
+
+h3 {
+  color: #11999e;
+}
+
+.middle-container {
+  margin: 100px 0;
+}
+
+.topContainer {
+  background-color: rgb(48, 109, 101);
+  position: relative;
+  padding-top: 100px;
+  color: #66bfb6;
+}
+
+.textDecoration {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.top-cloud {
+  position: absolute;
+  right: 300px;
+  top: 20px;
+}
+
+.bottom-cloud {
+  position: absolute;
+}
+
+.footer-link {
+  color: #11999e;
+}
+
+.skill-row {
+  width: 50%;
+  margin: 100px auto 100px auto;
+  text-align: left;
+  line-height: 2;
+}
+
+.computer-img {
+  width: 25%;
+  float: left;
+  margin-right: 30px;
+}
+
+.chillies-img {
+  width: 24%;
+  float: right;
+  margin-left: 30px;
+}
+
+p {
+  line-height: 2;
+}
+
+hr {
+  border: dotted rgb(169, 194, 241);
+  border-bottom: none;
+  width: 4%;
+  margin: 100px auto;
+}
+
+.contact-message {
+  width: 40%;
+  margin: 40px auto;
+}
+
+.bottom-container {
+  background-color: rgb(131, 206, 182);
+  padding: 50px 0 20px;
+}
+
+a {
+  color: #11999e;
+  margin: 10px 20px;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #eaf6f6;
+}
+
+.copyright {
+  color: #eaf6f6;
+  font-size: 0.75rem;
+  padding: 20px 0;
+}
+
+.intro {
+  width: 30%;
+  margin: auto;
+}
