@@ -11,6 +11,7 @@
 - [Goroutines and Channels](#goroutines-and-channels)
 - [Generics](#generics)
 - [fmt Package](#fmt-package)
+- [others](#others)
 
 ## Packages and Modules
 - A package is a folder that contains a bunch of go files, a bunch of packages is known as a module, defined by a `go.mod` file.
@@ -398,3 +399,6 @@
     - `Sprintf` same thing, but just for formatted strings.
 - `Println` and `Printf` are used for immediate output to the console, while `Fprintf` is used for writing formatted text to a specific output stream. `Sprint` and `Sprintf` are used for generating formatted text as a string without immediate output.
     - Check [the doc](https://pkg.go.dev/fmt) for more.
+
+## Others
+- When you have lots of `if` statements checking a particular value it is common to use a `switch` statement instead.
