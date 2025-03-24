@@ -11,7 +11,7 @@
 - [Goroutines and Channels](#goroutines-and-channels)
 - [Generics](#generics)
 - [fmt Package](#fmt-package)
-- [others](#others)
+- [tips](#tips)
 
 ## Packages and Modules
 - A package is a folder that contains a bunch of go files, a bunch of packages is known as a module, defined by a `go.mod` file.
@@ -20,7 +20,7 @@
 ## Testing
 - Go's built-in support for unit testing makes it easier to test as you go, [check it out](https://go.dev/doc/tutorial/add-a-test).
     - Check [this article](https://blog.jetbrains.com/go/2022/11/22/comprehensive-guide-to-testing-in-go/) to see testing examples in Go.
-- Discipline: Write a test, make the compiler pass, run the test, write enough code to make the test pass, refactor
+- Test Driven Development (TDD) discipline: Write a failing test, make the compiler pass, run the test, write enough code to make the test pass, refactor.
 - In Go, test functions must start with `Test` followed by a capitalized name (like `TestHello`) and take a single parameter of type `*testing.T` which provides methods for reporting test failures and logging.
     - The Go testing framework automatically handles dependencies between files in the same package. When you run `go test`, it compiles all `.go` files in the package (package main for example) and links them together into a single test binary. So if you have `hello_test.go` and `hello.go` part of the same package, they are linked and can access each other's functions.
     - Test files need to be with a name like `xxx_test.go`, the test function must start with the word `Test`, and test function takes one argument only `t *testing.T`.
@@ -400,5 +400,24 @@
 - `Println` and `Printf` are used for immediate output to the console, while `Fprintf` is used for writing formatted text to a specific output stream. `Sprint` and `Sprintf` are used for generating formatted text as a string without immediate output.
     - Check [the doc](https://pkg.go.dev/fmt) for more.
 
-## Others
+## Tips
 - When you have lots of `if` statements checking a particular value it is common to use a `switch` statement instead.
+- You can use a single `const` that has many variables in it.
+    ```go
+    // This
+    const (
+	spanish = "Spanish"
+	french  = "French"
+
+	englishHelloPrefix = "Hello, "
+	spanishHelloPrefix = "Hola, "
+	frenchHelloPrefix  = "Bonjour, "
+    )
+
+    // Instead of this
+    const spanish = "Spanish"
+    const french = "French"
+    const englishHelloPrefix = "Hello, "
+    const spanishHelloPrefix = "Hola, "
+    const frenchHelloPrefix = "Bonjour, "
+    ```
