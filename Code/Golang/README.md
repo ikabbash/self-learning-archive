@@ -19,9 +19,23 @@
 ## Testing
 - Go's built-in support for unit testing makes it easier to test as you go, [check it out](https://go.dev/doc/tutorial/add-a-test).
     - Check [this article](https://blog.jetbrains.com/go/2022/11/22/comprehensive-guide-to-testing-in-go/) to see testing examples in Go.
+- Discipline: Write a test, make the compiler pass, run the test, write enough code to make the test pass, refactor
 - In Go, test functions must start with `Test` followed by a capitalized name (like `TestHello`) and take a single parameter of type `*testing.T` which provides methods for reporting test failures and logging.
     - The Go testing framework automatically handles dependencies between files in the same package. When you run `go test`, it compiles all `.go` files in the package (package main for example) and links them together into a single test binary. So if you have `hello_test.go` and `hello.go` part of the same package, they are linked and can access each other's functions.
     - Test files need to be with a name like `xxx_test.go`, the test function must start with the word `Test`, and test function takes one argument only `t *testing.T`.
+- Subtests allow you to group and run related test cases (using `t.Run` for example).
+    - A benefit of this approach is you can set up shared code that can be used in the other tests.
+    ```go
+    t.Run("saying hello to people", func(t *testing.T) {
+		got := Hello("Chris")
+		want := "Hello, Chris"
+
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
+    ```
+- `t.Helper()` marks a function as a test helper. When a test fails, the error message will point to the line in the test function rather than inside the helper function, making debugging easier.
 
 ## Variables and Data Types
 - `int16` is a 16-bit signed integer with a range from -32,768 to 32,767. If you try to add 1 to 32,767 (the maximum value for `int16`), it will overflow, wrapping around to the minimum value, -32,768, due to how binary arithmetic works in fixed-size integers. This is called integer overflow.
