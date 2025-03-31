@@ -1,3 +1,4 @@
+# Sentry
 - To change [cleanup](https://github.com/getsentry/self-hosted/blob/f2e2dc2bb3c0c2505d0a6044989bdd29c7905fef/docker-compose.yml#L318-L326) schedule or check the number of days, check the following [article](https://forum.sentry.io/t/changing-sentry-event-retention-days-does-not-work/15313).
 - You can change Sentry’s root URL by modifying the config yaml file and adding `system.url-prefix`, [reference](https://develop.sentry.dev/config/#general).
 - In your Redis instance limit the memory usage and change max memory policy to its default one because Redis doesn’t release memory sometimes.
