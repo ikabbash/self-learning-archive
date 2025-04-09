@@ -421,3 +421,4 @@
     const spanishHelloPrefix = "Hola, "
     const frenchHelloPrefix = "Bonjour, "
     ```
+- You can unify arguments of the same type when defining functions. Rather rather than having `(x int, y int)` you can shorten it to `(x, y int)`.
