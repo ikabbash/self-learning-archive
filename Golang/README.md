@@ -37,6 +37,7 @@
 	})
     ```
 - `t.Helper()` marks a function as a test helper. When a test fails, the error message will point to the line in the test function rather than inside the helper function, making debugging easier.
+- [Testable Examples in Go](https://go.dev/blog/examples)
 
 ## Variables and Data Types
 - `int16` is a 16-bit signed integer with a range from -32,768 to 32,767. If you try to add 1 to 32,767 (the maximum value for `int16`), it will overflow, wrapping around to the minimum value, -32,768, due to how binary arithmetic works in fixed-size integers. This is called integer overflow.
