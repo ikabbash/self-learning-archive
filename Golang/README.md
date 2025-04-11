@@ -15,6 +15,9 @@
 
 ## Packages and Modules
 - A package is a folder that contains a bunch of go files, a bunch of packages is known as a module, defined by a `go.mod` file.
+    - A package is a directory inside your `$GOPATH/src` directory containing, amongst other things, `.go` source files.
+    - Package names should be all lower case and only letters.
+- All the files in a package’s directory must have the same package declaration.
 - You can view Go's packages documentations using `go doc package-name` (e.g., `go doc fmt`).
 
 ## Testing
@@ -423,3 +426,4 @@
     const frenchHelloPrefix = "Bonjour, "
     ```
 - You can unify arguments of the same type when defining functions. Rather rather than having `(x int, y int)` you can shorten it to `(x, y int)`.
+- Avoid repetition. `bytes.Buffer` not `bytes.BytesBuffer`, `strings.Reader` not `strings.StringReader`, etc..
