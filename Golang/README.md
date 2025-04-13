@@ -427,3 +427,9 @@
     ```
 - You can unify arguments of the same type when defining functions. Rather rather than having `(x int, y int)` you can shorten it to `(x, y int)`.
 - Avoid repetition. `bytes.Buffer` not `bytes.BytesBuffer`, `strings.Reader` not `strings.StringReader`, etc..
+- Writing [benchmarks](https://pkg.go.dev/testing#hdr-Benchmarks) in Go is another first-class feature of the language and it is very similar to writing tests.
+    - To run benchmark, execute `go test -bench=.`.
+        - `B/op`: the number of bytes allocated per iteration.
+        - `allocs/op`: the number of memory allocations per iteration.
+    - Note: By default benchmarks are run sequentially.
+    - Check [this](https://dave.cheney.net/2013/06/30/how-to-write-benchmarks-in-go) for more.
