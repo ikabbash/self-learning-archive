@@ -8,6 +8,7 @@ A personal repo for my self-learning journey—code, notes, experiments, and eve
 - [GraphQL](./GraphQL/)
 - [NodeJS](./NodeJS/)
 - [Python](./Python/)
+- [Elixir](./Elixir/)
 
 ### Notes
 - [Personal Notes](./notes.md)  
