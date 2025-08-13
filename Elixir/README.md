@@ -17,6 +17,12 @@
     - GenServers: Workers that remember data and do tasks for you.
     - Application: A special module that knows how to start your program the OTP way.
 - [Hex](https://hex.pm/) is Elixir’s package manager for finding, installing, and publishing libraries and dependencies.
+- To install packages in Elixir, add them to the deps list in your `mix.exs` file and then run:
+    ```
+    mix deps.get
+    ```
+    - Once you’ve added the package to `mix.exs` and run `mix deps.get`, you can use it by adding `alias package_name` to the code.
+        - Some libraries don’t require an alias, just call their functions directly.
 
 ## Syntax
 - `IO` is module name and `puts` is a function from that module that prints a string.
