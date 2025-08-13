@@ -4,6 +4,7 @@
 
 ## Basics
 - Elixir is a functional, concurrent programming language built on the Erlang VM, designed for scalable and fault-tolerant applications. The Erlang VM (BEAM) is a virtual machine optimized for running concurrent, distributed, and fault-tolerant applications.
+    - Elixir docs: https://elixir-lang.org/docs.html
 - Installation: https://elixir-lang.org/install.html
 - File extensions:
     - `.ex`: Compiled Elixir source files used for application modules and libraries.
@@ -11,12 +12,23 @@
 - IEx is Elixir’s interactive shell that lets you run Elixir code, test functions, and explore your application in real time.
 - Mix is Elixir’s built-in build tool that helps you create projects, manage dependencies, compile code, run tests, and automate common development tasks.
 - You can run a single Elixir file by using `elixir filename.exs`.
+- OTP is an awesome set of tools and libraries that Elixir inherits from Erlang, a programming language on whose VM it runs. It gives you ready-made building blocks like:
+    - Supervisors: Babysitters for your code that restart things if they fail.
+    - GenServers: Workers that remember data and do tasks for you.
+    - Application: A special module that knows how to start your program the OTP way.
+- [Hex](https://hex.pm/) is Elixir’s package manager for finding, installing, and publishing libraries and dependencies.
 
 ## Syntax
 - `IO` is module name and `puts` is a function from that module that prints a string.
     ```elixir
     IO.puts("Hello!")
     ```
+- A leading `_` in paramters within functions means the parameter is intentionally unused, preventing compiler warnings (such as variable is unused) while keeping the function signature intact.
+    ```elixir
+    def start(_type, _args) do
+    ```
+    - If you remove the underscores you'll get warnings when you compile.
+- When you see `start/2` it means a _function_ named _start_ that takes _two_ arguments.
 
 ## Mix
 - You can create a new Elixir project with `mix new project_name`.
