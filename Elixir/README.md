@@ -23,6 +23,42 @@
     ```
     - Once you’ve added the package to `mix.exs` and run `mix deps.get`, you can use it by adding `alias package_name` to the code.
         - Some libraries don’t require an alias, just call their functions directly.
+- Module attributes are values you attach to a module using the `@` symbol. They're similar to Javascript's `const`.
+    ```elixir
+    defmodule Example4 do
+    use Application
+    @x 5  # module attribute at the module level
+
+    def start(_type, _args) do
+        Example4.main()
+        Supervisor.start_link([], strategy: :one_for_one)
+    end
+
+    def main do
+        IO.puts(@x)
+    end
+    end
+    ```
+- An **atom** is a constant whose name is its value (like `:ok` or `:error` or even `:hello`) and is best for labels, status flags, or keys in maps because comparisons are fast and memory-efficient. A **string** is text data (like `"hello"`) used for dynamic or user-facing content. Use atoms for fixed, known values and strings for anything that can change or comes from outside your code.
+    - For atom to be more than one word, define it like this: `:"hello world"`
+    - String doc: https://hexdocs.pm/elixir/main/String.html
+    - Atom doc: https://hexdocs.pm/elixir/main/Atom.html
+- The question mark ? before a character is used to get its ASCII (or Unicode) code point as an integer.
+    ```
+    IO.puts(?b)  # prints 98
+    ```
+- In Elixir, variables are dynamically typed. Meaning you don’t declare a type, the value determines it.
+    ```elixir
+    name = "Alice"   # string
+    age = 30         # integer
+    alive = true     # boolean
+    ```
+- Elixir is dynamically typed, meaning a variable’s type is determined by its value at runtime, which makes coding flexible but can cause runtime errors or slowdowns if incompatible types are used together.
+- Division always returns a float.
+    ```elixir
+    IO.puts(10/2) # 5.0
+    ```
+    - There are no doubles, only floats in Elixir.
 
 ## Syntax
 - `IO` is module name and `puts` is a function from that module that prints a string.
