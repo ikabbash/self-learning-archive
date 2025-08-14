@@ -2,6 +2,8 @@
 
 > Code written while following along with [this Elixir course](https://youtu.be/-lgtb-YSUWE?si=j6PeifwLtPYBgE6o).
 
+Cheat sheet: https://devhints.io/elixir
+
 ## Basics
 - Elixir is a functional, concurrent programming language built on the Erlang VM, designed for scalable and fault-tolerant applications. The Erlang VM (BEAM) is a virtual machine optimized for running concurrent, distributed, and fault-tolerant applications.
     - Elixir docs: https://elixir-lang.org/docs.html
@@ -28,6 +30,7 @@
         ```
     - Watch this [video](https://youtu.be/fOyofP1__K0?si=dD78PLlyOpqhdI5N) for more.
 - A module groups related code together, and functions are named blocks inside modules that perform specific tasks and can be called with arguments to produce results.
+    - You could write two modules in the same file, but the convention with Elixir is one module per file.
 - Elixir’s built-in tools let you format code (`mix format`), run tests (`mix test`), and generate documentation (`mix docs`) easily.
     - https://hexdocs.pm/ex_doc/Mix.Tasks.Docs.html
         - You'll need to add the `ex_doc` library first in the project.
@@ -50,6 +53,7 @@
     ```
     - Once you’ve added the package to `mix.exs` and run `mix deps.get`, you can use it by adding `alias package_name` to the code.
         - Some libraries don’t require an alias, just call their functions directly.
+        - There is also `import` and can be used between your modules, check this [video](https://youtu.be/xSMn3eZOQXo?si=3uWwf3WYhgntzZzH) for a well detailed overview and best practices.
 - Module attributes are values you attach to a module using the `@` symbol. They're similar to Javascript's `const`.
     ```elixir
     defmodule Example4 do
@@ -66,6 +70,9 @@
     end
     end
     ```
+    - Note: They are created during compile time, not runtime.
+    - `@moduledoc` is another module attribute used to store documentation for a module, typically multi-line string, and is read by tools like ExDoc.
+        - [Video reference](https://youtu.be/Ys17oIOwHc0?si=g4vnQ0_gysL_M4-R).
 - An **atom** is a constant whose name is its value (like `:ok` or `:error` or even `:hello`) and is best for labels, status flags, or keys in maps because comparisons are fast and memory-efficient. A **string** is text data (like `"hello"`) used for dynamic or user-facing content. Use atoms for fixed, known values and strings for anything that can change or comes from outside your code.
     - For atom to be more than one word, define it like this: `:"hello world"`
     - String doc: https://hexdocs.pm/elixir/main/String.html
@@ -86,6 +93,11 @@
     IO.puts(10/2) # 5.0
     ```
     - There are no doubles, only floats in Elixir.
+- Main ways you can debug Elixir code:
+    - `IO.inspect`: Prints the value of a variable or expression, optionally with a label. Use it when you need quick, inline inspection
+    - `dbg`: Prints both expression and result along with location context; when used in pipelines, it shows each step. Use it when you want richer debugging output.
+    - `iex --dbg pry -S mix` lets you use `require IEx; IEx.pry()` in code to pause execution and interactively debug in the shell.
+    - Watching this [video](https://youtu.be/3mSnjBKtruU?si=0SwoJZiIq_0kshwK) is recommended about debugging.
 
 ## Syntax
 - `IO` is module name and `puts` is a function from that module that prints a string.
@@ -97,7 +109,19 @@
     def start(_type, _args) do
     ```
     - If you remove the underscores you'll get warnings when you compile.
-- When you see `start/2` it means a _function_ named _start_ that takes _two_ arguments.
+- When you see `start/2` it means a _function_ named _start_ that takes _two_ arguments. This is called function’s arity which is the number of arguments it takes, written as `function_name/arity` (e.g., `map/2`).
+    - You can have functions within a module have the same name but different arities, it doesn't make them the same function, each is a different function instead due to different arity.
+        ```elixir
+        defmodule Example do
+        def greet(), do: "Hello!"
+        def greet(name), do: "Hello, #{name}!"
+        end
+
+        Example.greet()      # "Hello!"
+        Example.greet("Sam") # "Hello, Sam!"
+        ```
+        - Here you have `greet/0` and `greet/1`
+- Private function is defined with `defp` (instead of `def`), can only be called within its module, and is used for internal helper logic not exposed as part of the public API. You can't even call it within IEx.
 - Compound types are data structures that group multiple values together, such as lists, tuples, maps, and keyword lists.
     - Tuples: fixed-size, ordered collections: `{1, :ok, "hi"}`
     - Lists: linked lists, good for prepending: `[1, 2, 3]`
@@ -122,6 +146,12 @@
     user1 = {"Hamada", :gold} # Tuple
     {name, membership} = user1
     IO.puts("#{name} has a #{membership} membership.")
+    ```
+- Guards are extra conditions you can add to function clauses, case expressions, cond, etc., to control pattern matching more precisely.
+    ```elixir
+    def classify(x) when is_integer(x) and x > 0, do: :positive
+    def classify(x) when is_integer(x) and x < 0, do: :negative
+    def classify(0), do: :zero
     ```
 - Elixir doesn’t have traditional loops; it uses recursion or enumeration functions like `Enum.each`, `Enum.map`, or `Stream` to iterate over collections.
     - `Enum.each` is a function that iterates over a collection and runs a given function for side effects, like printing, but it doesn’t return a new collection.
@@ -160,6 +190,7 @@
     |> String.split()
     |> Enum.reverse()
     ```
+    - Use pipe operator when you have two more functions called, don't overuse it.
 - You can take user input in Elixir using the code below.
     ```elixir
     input = IO.gets("Enter something: ") |> String.trim()
