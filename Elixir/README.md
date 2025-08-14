@@ -6,6 +6,33 @@
 - Elixir is a functional, concurrent programming language built on the Erlang VM, designed for scalable and fault-tolerant applications. The Erlang VM (BEAM) is a virtual machine optimized for running concurrent, distributed, and fault-tolerant applications.
     - Elixir docs: https://elixir-lang.org/docs.html
 - Installation: https://elixir-lang.org/install.html
+- Functional programming is a style where functions are the main building blocks, there are no classes, objects, methods and properties, or mutable state, and programs rely on immutable data, pure functions, and function composition.
+    ```
+    String.length("Test") # Elixir
+    "Test".length # NodeJS
+    ```
+    - Immutability means once a value is assigned, it cannot be changed, and any “modification” creates a new value instead.
+        ```elixir
+        iex(1)> list = [1, 2, 3]
+        [1, 2, 3]
+        iex(2)> list ++ [4, 5]
+        [1, 2, 3, 4, 5]
+        iex(3)> list # Here you'll notice that list haven't changed, to change you'll need to rebind like this: list = list ++ [4, 5]
+        [1, 2, 3]
+        ```
+    - If we compare immutability with Javascript, you'll notice it's not mutable.
+        ```js
+        const array = [1, 2, 3]
+        array.push(999)
+        array // prints 1, 2, 3, 999
+        ```
+    - Watch this [video](https://youtu.be/fOyofP1__K0?si=dD78PLlyOpqhdI5N) for more.
+- A module groups related code together, and functions are named blocks inside modules that perform specific tasks and can be called with arguments to produce results.
+- Elixir’s built-in tools let you format code (`mix format`), run tests (`mix test`), and generate documentation (`mix docs`) easily.
+    - https://hexdocs.pm/ex_doc/Mix.Tasks.Docs.html
+        - You'll need to add the `ex_doc` library first in the project.
+    - https://hexdocs.pm/mix/Mix.Tasks.Test.html
+    - https://hexdocs.pm/mix/main/Mix.Tasks.Format.html
 - File extensions:
     - `.ex`: Compiled Elixir source files used for application modules and libraries.
     - `.exs`: Interpreted Elixir script files used for scripts, tests, or one-off tasks.
