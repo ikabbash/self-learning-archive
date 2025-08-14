@@ -98,6 +98,122 @@
     ```
     - If you remove the underscores you'll get warnings when you compile.
 - When you see `start/2` it means a _function_ named _start_ that takes _two_ arguments.
+- Compound types are data structures that group multiple values together, such as lists, tuples, maps, and keyword lists.
+    - Tuples: fixed-size, ordered collections: `{1, :ok, "hi"}`
+    - Lists: linked lists, good for prepending: `[1, 2, 3]`
+    - Maps: key-value pairs: `%{name: "Alice", age: 30}`
+    - Keyword lists: special lists of tuples with atom keys: `[a: 1, b: 2]`
+    - Date structs : immutable date values, e.g. `~D[2025-08-13]`
+    - Note: You can’t directly print compound types with `IO.puts` because it only handles strings; use `IO.inspect` instead.
+- Lists are linked, flexible, and good for prepending, while tuples are fixed-size, faster for access, and better for grouping fixed data.
+- The `!` at the end of functions raises an error on failure instead of returning a tuple, and is used when you want to skip explicit error handling. Basically it's a caution that something could draw an error.
+    ```elixir
+    Date.new(2025, 13, 1)   # returns {:error, :invalid_date}
+    Date.new!(2025, 13, 1)  # raises an ArgumentError
+    ```
+- Pattern matching lets you match and destructure values, often used to assign variables or extract data.
+    ```elixir
+    {a, b, c} = {1, 2, 3}
+    IO.inspect(a)  # 1
+    IO.inspect(b)  # 2
+    IO.inspect(c)  # 3
+    ```
+    ```elixir
+    user1 = {"Hamada", :gold} # Tuple
+    {name, membership} = user1
+    IO.puts("#{name} has a #{membership} membership.")
+    ```
+- Elixir doesn’t have traditional loops; it uses recursion or enumeration functions like `Enum.each`, `Enum.map`, or `Stream` to iterate over collections.
+    - `Enum.each` is a function that iterates over a collection and runs a given function for side effects, like printing, but it doesn’t return a new collection.
+        ```elixir
+        users = [
+            {"Caleb", :gold},
+            {"Carrie", :silver},
+            {"John", :bronze}
+        ]
+
+        Enum.each(users, fn {name, membership} -> IO.puts("#{name} has a #{membership} membership.")
+        end)
+        ```
+- This code demonstrates using structs, nested data, and Enum.each to iterate and print formatted information.
+    ```elixir
+    gold_membership = %Membership{type: :gold, price: 25}
+    silver_membership = %Membership{type: :silver, price: 20}
+    bronze_membership = %Membership{type: :bronze, price: 15}
+    _none_membership = %Membership{type: :none, price: 0} # Hidden with `_` because its unused
+
+    users = [
+    %User{name: "Caleb", membership: gold_membership},
+    %User{name: "Kayla", membership: gold_membership},
+    %User{name: "Carrie", membership: silver_membership},
+    %User{name: "John", membership: bronze_membership}
+    ]
+
+    Enum.each(users, fn %User{name: name, membership: membership} ->
+    IO.puts("#{name} has a #{membership.type} membership paying #{membership.price}.")
+    end)
+    ```
+- Pipe operator `|>` is used to pass the result of one expression as the first argument to the next function. It makes code more readable and expressive, especially when chaining multiple function calls.
+    ```elixir
+    "hello world"
+    |> String.upcase()
+    |> String.split()
+    |> Enum.reverse()
+    ```
+- You can take user input in Elixir using the code below.
+    ```elixir
+    input = IO.gets("Enter something: ") |> String.trim()
+    ```
+    - If pipe isn't used with `String.trim`, your input will have a new line character by default.
+        ```elixir
+        iex(10)> input = IO.gets("Enter something: ")
+        Enter something: test
+        "test\n"
+        ```
+- `case` is a pattern-matching control structure used to compare a value against multiple patterns and execute code based on the first match. An optional `_` pattern can handle all unmatched cases.
+    ```elixir
+    case IO.gets("Enter a number: ") |> String.trim() |> Integer.parse() do
+    {n, _} when n > 0 -> 
+        IO.puts("Positive number: #{n}")
+
+    {n, _} when n < 0 -> 
+        IO.puts("Negative number: #{n}")
+
+    :error -> 
+        IO.puts("That's not a valid number.")
+
+    _ -> 
+        IO.puts("Unhandled input.")
+    end
+    ```
+- In Elixir, a comprehension is a concise way to generate, transform, and filter collections (lists, maps, binaries) using a single expression. It lets you loop and transform data in a single, readable expression.
+    ```elixir
+    numbers = [1, 2, 3, 4, 5]
+
+    squares = for n <- numbers, n > 2, do: n * n
+    IO.inspect(squares) 
+    # [9, 16, 25]
+    ```
+    - You can also use conditions in comprehensions, example below filters data.
+        ```elixir
+        for x <- 1..5, x > 2, do: x
+        # [3, 4, 5]
+        ```
+- An anonymous function is a function without a name, created using the `fn ... end` syntax.
+    ```elixir
+    square = fn x -> x * x end
+    IO.puts(square.(5)) # outputs 25
+    ```
+    - The shorthand `&` syntax makes anonymous functions more concise. Used when you have a single simple expression.
+        ```elixir
+        square = &(&1 * &1)
+        IO.puts(square.(5)) # outputs 25
+        ```
+        ```elixir
+        numbers = ["1", "2", "3", "4", "5"]
+        result = Enum.map(numbers, &String.to_integer/1) # equivalent to result = Enum.map(numbers, fn x -> String.to_integer(x) end)
+        IO.inspect(result)
+        ```
 
 ## Mix
 - You can create a new Elixir project with `mix new project_name`.
