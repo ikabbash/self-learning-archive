@@ -46,6 +46,8 @@ Cheat sheet: https://devhints.io/elixir
     - Supervisors: Babysitters for your code that restart things if they fail.
     - GenServers: Workers that remember data and do tasks for you.
     - Application: A special module that knows how to start your program the OTP way.
+        - An Application environment is a key-value store that holds runtime configuration for a specific OTP application.
+- https://hexdocs.pm/elixir/1.18.4/Kernel.html
 - [Hex](https://hex.pm/) is Elixir’s package manager for finding, installing, and publishing libraries and dependencies.
 - To install packages in Elixir, add them to the deps list in your `mix.exs` file and then run:
     ```
