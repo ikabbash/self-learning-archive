@@ -247,6 +247,17 @@ Cheat sheet: https://devhints.io/elixir
         result = Enum.map(numbers, &String.to_integer/1) # equivalent to result = Enum.map(numbers, fn x -> String.to_integer(x) end)
         IO.inspect(result)
         ```
+- `|` operator splits a list into head and tail during pattern matching: `[head | tail]`.
+    ```elixir
+    [head | tail] = [1, 2, 3, 4]
+    # head = 1
+    # tail = [2, 3, 4]
+
+    [first, second | rest] = [1, 2, 3, 4, 5]
+    # first = 1
+    # second = 2  
+    # rest = [3, 4, 5]
+    ```
 
 ## Mix
 - You can create a new Elixir project with `mix new project_name`.
