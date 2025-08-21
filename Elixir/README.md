@@ -43,10 +43,19 @@ Cheat sheet: https://devhints.io/elixir
 - Mix is Elixir’s built-in build tool that helps you create projects, manage dependencies, compile code, run tests, and automate common development tasks.
 - You can run a single Elixir file by using `elixir filename.exs`.
 - OTP is an awesome set of tools and libraries that Elixir inherits from Erlang, a programming language on whose VM it runs. It gives you ready-made building blocks like:
-    - Supervisors: Babysitters for your code that restart things if they fail.
+    - Supervisors: Monitors and manages other processes (child processes).
+        - If a child process crashes, the supervisor can restart it.
     - GenServers: Workers that remember data and do tasks for you.
     - Application: A special module that knows how to start your program the OTP way.
         - An Application environment is a key-value store that holds runtime configuration for a specific OTP application.
+        - When you run your project (via `mix run`, `iex -S mix`, or when deployed), Elixir looks for your app’s `Application.start/2` function. That function is responsible for starting processes that your app needs to run.
+            ```elixir
+            # Example below launches and supervises a Finch HTTP client (than having to define it in different parts of the code)
+            def start(_type, _args) do
+            children = [
+            {Finch, name: MyFinch}
+            ]
+            ```
 - https://hexdocs.pm/elixir/1.18.4/Kernel.html
 - [Hex](https://hex.pm/) is Elixir’s package manager for finding, installing, and publishing libraries and dependencies.
 - To install packages in Elixir, add them to the deps list in your `mix.exs` file and then run:
