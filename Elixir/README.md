@@ -109,6 +109,9 @@ Cheat sheet: https://devhints.io/elixir
     - `dbg`: Prints both expression and result along with location context; when used in pipelines, it shows each step. Use it when you want richer debugging output.
     - `iex --dbg pry -S mix` lets you use `require IEx; IEx.pry()` in code to pause execution and interactively debug in the shell.
     - Watching this [video](https://youtu.be/3mSnjBKtruU?si=0SwoJZiIq_0kshwK) is recommended about debugging.
+- `config/` directory has your application's configuration files (such as `config.exs`, environment-specific configs, and `runtime.exs`), serving as the centralized place where both compile-time and runtime settings are defined and organized.
+    - `config/config.exs` is the compile-time configuration file that's processed during build.
+    - `config/runtime.exs` is evaluated at runtime.
 
 ## Syntax
 - `IO` is module name and `puts` is a function from that module that prints a string.
