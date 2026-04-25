@@ -61,7 +61,7 @@
     ```
 
 ## Arrays and Slices
-- Array is a fixed-size collection of elements of the same type, with its length being part of its type (e.g., [3]int), making it inflexible but efficient for fixed data. Array is also contiguous in memory.
+- Array is a fixed-size collection of elements of the same type, with its length being part of its type (e.g., `[3]int`), making it inflexible but efficient for fixed data. Array is also contiguous in memory.
     
     ```go
     var intArr [3]int32 // [3] is the fixed size
@@ -71,6 +71,14 @@
     fmt.Println(&intArr[1]) // 0x14000122008
     fmt.Println(&intArr[2]) // 0x1400012200c
     ```
+    - Arrays can be initialized in two ways:
+
+        ```go
+        // Explicit size: array length is fixed at 5 and you must provide exactly 5 elements
+        numbers := [5]int{1, 2, 3, 4, 5}
+        // Inferred size: compiler counts elements and sets length automatically
+        numbers := [...]int{1, 2, 3, 4, 5}
+        ```
     
 - Slice is a flexible, dynamically-sized view into an array or a portion of an array, allowing for easy resizing and manipulation of sequences of elements (basically arrays with additional functionalities).
     
@@ -132,7 +140,7 @@
             ```
             
         - The reason why index `1` is 233 is because the `range` keyword knows that its a 2 bytes character so it decodes correctly to 233 (the bytes in the screenshot above).
-        - An easier way to deal with iterating and indexing strings is to cast them to an array of runes for such case (runes are just an alias for `int32`).
+        - An easier way to deal with iterating and indexing strings is to cast them to an array of runes for such case (rune is a single Unicode code point, basically just an alias for `int32`).
             
             ```go
             func main() {
@@ -151,6 +159,7 @@
             5 233 */
             ```
             
+        - Strings are bytes, not characters. Runes represent actual characters
         - Check [this](https://youtu.be/8uiZC0l4Ajw) part of the video for more.
     - When you're dealing with strings in Go you're dealing with a value whose underlying representation is an array of bytes.
     - You should use runes when you need to work with individual characters in a string and handle text that includes characters from different languages, including non-ASCII characters.
@@ -403,6 +412,37 @@
     - `Sprintf` same thing, but just for formatted strings.
 - `Println` and `Printf` are used for immediate output to the console, while `Fprintf` is used for writing formatted text to a specific output stream. `Sprint` and `Sprintf` are used for generating formatted text as a string without immediate output.
     - Check [the doc](https://pkg.go.dev/fmt) for more.
+- most useful Go `fmt` placeholders:
+
+    | Category   | Placeholder | Description              | Example Output        |
+    | ---------- | ----------- | ------------------------ | --------------------- |
+    | General    | `%v`        | Default format           | `123`, `true`         |
+    |            | `%+v`       | Struct with field names  | `{Name:John Age:20}`  |
+    |            | `%#v`       | Go syntax representation | `main.User{Name:"J"}` |
+    |            | `%T`        | Type of value            | `int`, `string`       |
+    |            | `%%`        | Literal `%`              | `%`                   |
+    | Integer    | `%d`        | Base 10                  | `42`                  |
+    |            | `%b`        | Binary                   | `101010`              |
+    |            | `%o`        | Octal                    | `52`                  |
+    |            | `%x`        | Hex (lowercase)          | `2a`                  |
+    |            | `%X`        | Hex (uppercase)          | `2A`                  |
+    |            | `%c`        | Character (rune)         | `A`                   |
+    |            | `%U`        | Unicode format           | `U+0041`              |
+    | Float      | `%f`        | Decimal                  | `3.14`                |
+    |            | `%e`        | Scientific (lowercase)   | `3.14e+00`            |
+    |            | `%E`        | Scientific (uppercase)   | `3.14E+00`            |
+    |            | `%g`        | Compact format           | `3.14` / `1e+06`      |
+    |            | `%G`        | Compact uppercase        | `3.14` / `1E+06`      |
+    | String     | `%s`        | Plain string             | `hello`               |
+    |            | `%q`        | Quoted string            | `"hello"`             |
+    |            | `%x`        | Hex encoding             | `68656c6c6f`          |
+    |            | `%X`        | Hex uppercase            | `68656C6C6F`          |
+    | Boolean    | `%t`        | true / false             | `true`                |
+    | Pointer    | `%p`        | Memory address           | `0xc000010230`        |
+    | Width/Prec | `%6d`       | Width 6 (right-aligned)  | `    42`              |
+    |            | `%-6d`      | Width 6 (left-aligned)   | `42    `              |
+    |            | `%.2f`      | 2 decimal places         | `3.14`                |
+    |            | `%6.2f`     | Width 6, 2 decimals      | `  3.14`              |
 
 ## Tips
 - When you have lots of `if` statements checking a particular value it is common to use a `switch` statement instead.
@@ -425,7 +465,7 @@
     const spanishHelloPrefix = "Hola, "
     const frenchHelloPrefix = "Bonjour, "
     ```
-- You can unify arguments of the same type when defining functions. Rather rather than having `(x int, y int)` you can shorten it to `(x, y int)`.
+- You can unify arguments of the same type when defining functions. Rather than having `(x int, y int)` you can shorten it to `(x, y int)`.
 - Avoid repetition. `bytes.Buffer` not `bytes.BytesBuffer`, `strings.Reader` not `strings.StringReader`, etc..
 - Writing [benchmarks](https://pkg.go.dev/testing#hdr-Benchmarks) in Go is another first-class feature of the language and it is very similar to writing tests.
     - To run benchmark, execute `go test -bench=.`.
