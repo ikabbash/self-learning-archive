@@ -20,6 +20,7 @@
 - All the files in a package’s directory must have the same package declaration.
 - You can view Go's packages documentations using `go doc package-name` (e.g., `go doc fmt`).
 - Package `main` will only contain integration of other packages and not unit-testable code.
+- Go is good for tooling because it is simple with syntax that is easy to parse, built-in packages for parsing + formatting code, and has tools like `gofmt`, `godoc`, and `gofix` because of this design.
 
 ## Testing
 - Go's built-in support for unit testing makes it easier to test as you go, [check it out](https://go.dev/doc/tutorial/add-a-test).
@@ -48,7 +49,14 @@
     - Run -> pass.
     - Refactor safely.
     - Repeat.
+- It should not be a goal to have as many tests as possible, but rather to have as much confidence as possible in your code base. Having too many tests can add more overhead in maintenance. **Every test has a cost.**
 - [Testable Examples in Go](https://go.dev/blog/examples)
+- Go’s test coverage tool works by rewriting source code, not analyzing compiled binaries. Test coverage measures how much of your code runs during tests (e.g. 80% coverage = 80% of statements executed).
+    - How it works: Go rewrites your source code, inserts counters into the code, compiles and runs the modified version, then reports which parts executed. This approach is simpler than binary instrumentation.
+    - Also has additional settings such as:
+        - `set` (and the default): did each statement run?
+        - `count`: how many times did each statement run?
+        - `atomic`: like count, but counts precisely in parallel programs.
 
 ## Variables and Data Types
 - `int16` is a 16-bit signed integer with a range from -32,768 to 32,767. If you try to add 1 to 32,767 (the maximum value for `int16`), it will overflow, wrapping around to the minimum value, -32,768, due to how binary arithmetic works in fixed-size integers. This is called integer overflow.
