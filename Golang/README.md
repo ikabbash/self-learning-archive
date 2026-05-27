@@ -277,6 +277,40 @@
     }
     ```
 
+- Variadic functions are functions that can accept a variable number of arguments of the same type using `...`.
+    - Inside the function, the variadic parameter behaves like a slice.
+    - The variadic parameter must be the last parameter in the function signature (there can only be one).
+    - Common examples in Go's standard library are `fmt.Println` and `append`.
+
+    ```go
+    package main
+
+    import "fmt"
+
+    // Variadic function
+    func sum(numbers ...int) int {
+        total := 0
+        for _, n := range numbers {
+            total += n
+        }
+        return total
+    }
+
+    func main() {
+        fmt.Println(sum(1, 2))       // 3
+        fmt.Println(sum(1, 2, 3, 4)) // 10
+
+        nums := []int{5, 6, 7}
+
+        // Expands slice into variadic arguments
+        fmt.Println(sum(nums...)) // 18
+    }
+    ```
+
+    - Behind the scene the parameter becomes a slice automatically.
+    - `numbers ...int` means the function can receive zero or more `int` values.
+    - `nums...` expands a slice into separate arguments when calling a variadic function.
+
 ## Interfaces
 - Interface defines method signatures, allowing methods to accept any type that implements them, enabling flexibility and polymorphism. For example, instead of creating a method that calculates area for each struct shape, you can have a generalized one.
 
