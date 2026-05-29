@@ -116,6 +116,7 @@
         - If you tried to print the index `[4]` you’ll get out of range error because nothing is assigned in it.
     - We can specify the length of the slice as well as optionally specify the capacity of the slice. By default, the capacity will just be the length of the slice.
         - You may want to specify the capacity if you have a rough idea of how many values you're going to need to hold, this avoids your program having to reallocate the underlying array when it needs to store more values which can have pretty large impact on performance. Reallocation of arrays can slow things down.
+    - You can’t use equality operators (`==` or `!=`) to compare slices in Go; instead, use `slices.Equal` for shallow element-by-element comparison, which only works with comparable element types (not things like 2D/nested slices).
 - `range` lets you iterate over an array and it returns the index and value on each iteration.
 
     ```go
@@ -134,6 +135,19 @@
 
     - `_` is called the blank identifier, in the example above you're basically saying "I don’t care about the index, ignore it."
         - If you need the index, you'll replace `_` with anything you want.
+- You can create slices using `make` to control both initial length and capacity: `make([]int, len)` creates a slice already filled with zero values, while `make([]int, 0, cap)` creates an empty slice with preallocated capacity for performance. Length (`len`) is how many elements are currently in the slice, and capacity (`cap`) is how many elements it can grow into before needing reallocation, which helps avoid repeated memory allocations when appending.
+
+    ```go
+    nums := make([]int, 0, 5)
+
+    fmt.Println(len(nums)) // 0
+    fmt.Println(cap(nums)) // 5
+
+    nums = append(nums, 10, 20)
+    fmt.Println(nums) // [10 20]
+    ```
+
+    - As mentioned, slices have a capacity. If you have a slice with a capacity of 2 and try to do `mySlice[10] = 1` you will get a runtime error. You'll need to use `append` function which takes a slice and a new value, then returns a new slice with all the items in it.
 
 ## Strings and Runes
 - Strings are presented as binary numbers in computers, one way of doing this was ASCII encoding where each letter got its own ASCII value. In Go, strings are encoded in UTF-8 even for cases like special characters, Chinese letters or emojis. Non-ASCII characters use 2 or more bytes.
