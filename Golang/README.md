@@ -253,7 +253,9 @@
         }
         ```
 
-- Methods are functions that are associated with a specific type, such as a struct. They allow you to define behavior for instances of that type. Methods are similar to functions but have a receiver, which ties them to a particular type.
+- Methods are functions that are associated with a specific type (a function with a receiver), such as a struct. They allow you to define behavior for instances of that type. Methods are similar to functions but have a receiver, which ties them to a particular type.
+    - Method declaration: `func (receiverName ReceiverType) MethodName(args)`. Meaning the this function belongs to the type `ReceiverType`.
+    - A method declaration binds an identifier, the method name, to a method, and associates the method with the receiver's base type.
 
     ```go
     package main
@@ -290,6 +292,64 @@
         fmt.Println("Scaled Height:", rect.Height) // Output: Scaled Height: 10
     }
     ```
+
+- Go does not support function overloading (where you can have two functions of the same name but with different argument type) because Go identifies functions by name only, not by parameter types. However, functions with the same name can exist in different packages:
+
+    ```go
+    // Package rectangle
+    func Area(r Rectangle) float64 {
+        return r.Width * r.Height
+    }
+
+    // Package circle
+    func Area(c Circle) float64 {
+        return math.Pi * c.Radius * c.Radius
+    }
+
+    // Then you would call them as:
+    rectangle.Area(rect)
+    circle.Area(c)
+    ```
+    
+    - This solution can be overkill, for the example above. Instead, use methods. Methods are attached to different receiver types, so there's no naming conflict.
+
+        ```go
+        type Rectangle struct {
+            Width, Height float64
+        }
+        func (r Rectangle) Area() float64 {
+            return r.Width * r.Height
+        }
+
+        type Circle struct {
+            Radius float64
+        }
+        func (c Circle) Area() float64 {
+            return math.Pi * c.Radius * c.Radius
+        }
+
+        // Now both types can have an Area method:
+        rect.Area()
+        circle.Area()
+        ```
+    
+    - Take note that there is NO magical behavior:
+        
+        ```go
+        // This:
+        func (c Circle) Area() float64
+
+        // Is just syntactic sugar for:
+        func Area(c Circle) float64
+        ```
+
+        - Go just lets you write `circle.Area()` instead of `Area(circle)`.
+    
+    - It is a convention in Go to have the receiver variable be the first letter of the type.
+
+        ```go
+        r Rectangle
+        ```
 
 - Variadic functions are functions that can accept a variable number of arguments of the same type using `...`.
     - Inside the function, the variadic parameter behaves like a slice.
