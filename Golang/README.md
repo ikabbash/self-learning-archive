@@ -253,6 +253,23 @@
         }
         ```
 
+    - There's also mamed field struct literals which assign values using explicit field names (e.g. `Rectangle{Width: 12, Height: 6}`), which makes them safer and more readable than positional struct literals that rely on field order (e.g. `Rectangle{12, 6}`); in tests, named fields are preferred because they prevent silent bugs when struct definitions change and improve clarity and maintainability.
+
+        ```go
+        // Named fields (safe, explicit, recommended in tests)
+        type Rectangle struct {
+            Width  float64
+            Height float64
+        }
+
+        r1 := Rectangle{Width: 12, Height: 6}
+
+        // Positional fields (order-dependent, more fragile)
+        r2 := Rectangle{12, 6}    
+        ```
+
+    - Use structs when you need to group related fields of different types into a single entity, like modeling a `User` with `name`, `email`, and `age` so you pass one clean object instead of scattered variables.
+
 - Methods are functions that are associated with a specific type (a function with a receiver), such as a struct. They allow you to define behavior for instances of that type. Methods are similar to functions but have a receiver, which ties them to a particular type.
     - Method declaration: `func (receiverName ReceiverType) MethodName(args)`. Meaning the this function belongs to the type `ReceiverType`.
     - A method declaration binds an identifier, the method name, to a method, and associates the method with the receiver's base type.
@@ -292,6 +309,8 @@
         fmt.Println("Scaled Height:", rect.Height) // Output: Scaled Height: 10
     }
     ```
+
+    - Use methods when you want to attach behavior directly to a type, like adding a `FullName()` method to a `User` struct so the logic lives with the data rather than floating in unrelated functions.
 
 - Go does not support function overloading (where you can have two functions of the same name but with different argument type) because Go identifies functions by name only, not by parameter types. However, functions with the same name can exist in different packages:
 
@@ -416,7 +435,9 @@
         return math.Pi * c.Radius * c.Radius
     }
 
+
     // With Interface (Solution)
+    // Any type that has a method Area() float64 satisfies this interface automatically (no explicit declaration needed).
     type Shape interface {
         Area() float64
     }
@@ -457,6 +478,8 @@
         - Polymorphism: Enables functions to work with multiple types that satisfy the interface.
         - Decoupling: Reduces dependencies between components, making code easier to maintain.
         - Testing: Simplifies unit testing by allowing mock implementations of dependencies.
+- Use interfaces when you want a single function to work across multiple types, like a `ProcessPayment(p PaymentMethod)` function that handles both `CreditCard` and `PayPal` without separate implementations for each.
+- In Go interface resolution is implicit. If the type you pass in matches what the interface is asking for, it will compile.
 
 ## Pointers
 - Pointer is a variable that stores the memory address of another variable.
