@@ -57,6 +57,31 @@
         - `set` (and the default): did each statement run?
         - `count`: how many times did each statement run?
         - `atomic`: like count, but counts precisely in parallel programs.
+- [Table driven tests](https://go.dev/wiki/TableDrivenTests) are useful when you want to build a list of test cases that can be tested in the same manner.
+    - Each table entry is a complete test case with inputs and expected results, and sometimes with additional information such as a test name to make the test output easily readable. So basically you put test cases into a slice (table), loop over them, and run the same logic for each case.
+- You can run specific Go tests using the `go test` command with flags that filter by test name, allowing you to execute only matching tests instead of the whole test suite.
+
+    ```bash
+    # Run all tests in current package
+    go test
+
+    # Run a specific test function
+    go test -run TestArea
+
+    # Run tests matching a regex pattern
+    go test -run Area
+
+    # Run a specific test in verbose mode (shows detailed output)
+    go test -v -run TestArea
+
+    # Run tests in a specific package
+    go test ./path/to/package -run TestArea
+
+    # Run a specific subtest of a test (created by `t.Run`)
+    go test -run TestArea/Rectangle
+    ```
+
+- `t.Errorf` is used to report a test failure by logging an error message while continuing execution of the current test, whereas `t.Run` is used to define and execute a subtest (a named test case inside a parent test), allowing better structure, isolation, and reporting of multiple related test cases.
 
 ## Variables and Data Types
 - `int16` is a 16-bit signed integer with a range from -32,768 to 32,767. If you try to add 1 to 32,767 (the maximum value for `int16`), it will overflow, wrapping around to the minimum value, -32,768, due to how binary arithmetic works in fixed-size integers. This is called integer overflow.
