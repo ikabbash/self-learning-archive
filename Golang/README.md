@@ -21,6 +21,40 @@
 - You can view Go's packages documentations using `go doc package-name` (e.g., `go doc fmt`).
 - Package `main` will only contain integration of other packages and not unit-testable code.
 - Go is good for tooling because it is simple with syntax that is easy to parse, built-in packages for parsing + formatting code, and has tools like `gofmt`, `godoc`, and `gofix` because of this design.
+- Go uses naming conventions to control visibility (exported vs unexported identifiers):
+    - Identifiers that start with an uppercase letter are exported (public) and can be accessed from other packages.
+    - Identifiers that start with a lowercase letter are unexported (private to the package they are defined in).
+    - This applies to variables, constants, functions, methods, structs, interfaces, and fields.
+    
+    ```go
+    package wallet
+
+    type Wallet struct {      // exported
+        balance int          // unexported
+    }
+
+    func (w *Wallet) Deposit(amount int) {} // exported
+    func (w *Wallet) reset() {}             // unexported
+    ```
+
+    - Code in another package can use `Wallet` and `Deposit`, but cannot access `balance` or call `reset`.
+    - Go does not have `public` or `private` keywords; capitalization determines visibility.
+    - To access exported identifiers from another package, import the package and reference them using dot notation:
+
+        ```go
+        package main
+
+        import "example/wallet"
+
+        func main() {
+            w := wallet.Wallet{} // OK: Wallet is exported
+
+            w.Deposit(100)       // OK: Deposit is exported
+
+            // w.balance = 100   // ERROR: balance is unexported
+            // w.reset()         // ERROR: reset is unexported
+        }
+        ```
 
 ## Testing
 - Go's built-in support for unit testing makes it easier to test as you go, [check it out](https://go.dev/doc/tutorial/add-a-test).
@@ -429,6 +463,8 @@
     - `numbers ...int` means the function can receive zero or more `int` values.
     - `nums...` expands a slice into separate arguments when calling a variadic function.
 
+- Methods with value receivers operate on a copy of the receiver value. Changes made inside the method do not affect the original value. Use a pointer receiver (`*Type`) when the method needs to modify the original value or avoid copying large structs.
+
 ## Interfaces
 - Interface defines method signatures, allowing methods to accept any type that implements them, enabling flexibility and polymorphism. For example, instead of creating a method that calculates area for each struct shape, you can have a generalized one.
 
@@ -522,7 +558,7 @@
         }
         ```
 
-- Using pointers avoids copying data, saving memory and enhancing performance by directly accessing and modifying the original variable. Example below demonstrates that each array have different memory address.
+- Using pointers avoids copying data, saving memory, and enhancing performance by directly accessing and modifying the original variable. Example below demonstrates that each array have different memory address.
 
     ```go
     package main
@@ -551,7 +587,7 @@
     }
     ```
 
-    - The better example from the one above using pointer is modifying thing2 without affecting thing1 so they’ll have same memory address (same array) instead of double memory usage (two separate arrays).
+    - The better example from the one above using pointer is modifying `thing2` without affecting `thing1` so they’ll have same memory address (same array) instead of double memory usage (two separate arrays).
 
         ```go
         package main
@@ -580,6 +616,18 @@
             return *thing2 // Return a copy of the modified array
         }
         ```
+
+- Struct pointers in Go are automatically dereferenced. For example, `w.balance` works instead of `(*w).balance`.
+
+    ```go
+    type Wallet struct {
+        balance int
+    }
+
+    func (w *Wallet) Balance() int {
+        return w.balance // same as (*w).balance
+    }
+    ```
 
 ## Goroutines and Channels
 - Goroutines are a way to launch multiple functions and have them execute concurrently.
