@@ -464,6 +464,39 @@
     - `nums...` expands a slice into separate arguments when calling a variadic function.
 
 - Methods with value receivers operate on a copy of the receiver value. Changes made inside the method do not affect the original value. Use a pointer receiver (`*Type`) when the method needs to modify the original value or avoid copying large structs.
+- Go lets you create new types from existing ones (type aliasing) using `type NewName OriginalType`.
+
+    ```go
+    package main
+
+    import "fmt"
+
+    type Age int
+
+    func main() {
+        var a Age = 21
+        fmt.Println(a)
+    }
+    ```
+
+    - `Age` is a new type based on `int`, so it behaves like an `int` but is treated as a distinct type by the compiler. This improves type safety because `Age` and `int` are not interchangeable without explicit conversion.
+    - You can declare methods on custom types just like on structs, which is useful for adding domain-specific behavior on top of primitive types (e.g., adding a `Deposit` method to `type Bitcoin int`).
+    - The main benefit is type safety: even though `type Bitcoin int` and `type AccountID int` are both `int` under the hood, the compiler treats them as distinct types, so passing a `Bitcoin` where an `AccountID` is expected won't compile, catching mistakes that plain `int` would silently allow.
+    - Implement the `fmt.Stringer` interface by defining a `String() string` method on your type to control how it is printed with `%s` (e.g., `func (b Bitcoin) String() string { return fmt.Sprintf("%d BTC", b) }` prints `10 BTC` instead of `10`).
+
+    ```go
+    // Imagine you have a function:
+    func Transfer(from int, to int, amount int) {}
+
+    //Nothing stops you from accidentally doing:
+    Transfer(amount, to, from) // wrong order, but compiles fine
+
+    // But if you do:
+    type AccountID int
+    type Bitcoin int
+    func Transfer(from AccountID, to AccountID, amount Bitcoin) {}
+    // The compiler catches your mistake
+    ```
 
 ## Interfaces
 - Interface defines method signatures, allowing methods to accept any type that implements them, enabling flexibility and polymorphism. For example, instead of creating a method that calculates area for each struct shape, you can have a generalized one.
