@@ -498,6 +498,36 @@
     // The compiler catches your mistake
     ```
 
+- You can implement the `fmt.Stringer` interface on any custom type if you want to control how it looks when printed with `%s` — instead of seeing a raw number, you see something meaningful like `10 BTC`. This is useful when your type wraps a primitive (like `int`) but represents something more specific in your domain.
+
+    - `fmt.Stringer` is a built-in interface from the `fmt` package with one method: `String() string`. Any **type** that has this method automatically satisfies it.
+
+    ```go
+        type Bitcoin int
+
+        // Without this, fmt has no idea how to print Bitcoin as a string
+        func (b Bitcoin) String() string {
+            return fmt.Sprintf("%d BTC", b)
+        }
+
+        fmt.Printf("%s", Bitcoin(10)) // 10 BTC (instead of just 10)
+    ```
+
+    - How `%s` resolves behind the scenes:
+
+    ```
+    %s  →  fmt checks: does this type implement Stringer?
+                │
+         ┌──────┴──────┐
+        YES             NO
+         │               │
+         ▼               ▼
+    calls b.String()   compile error
+    → "10 BTC"         (use %d or %v instead)
+    ```
+
+    - `%s` doesn't call `String()` directly by name — it checks for the **Stringer interface** first. The interface is the contract that says *"I promise I have a `String()` method"*. `%s` trusts that contract, and through it reaches the actual function.
+
 ## Interfaces
 - Interface defines method signatures, allowing methods to accept any type that implements them, enabling flexibility and polymorphism. For example, instead of creating a method that calculates area for each struct shape, you can have a generalized one.
 
