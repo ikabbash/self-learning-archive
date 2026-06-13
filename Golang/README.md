@@ -750,6 +750,7 @@
 ## Tips
 - When you have lots of `if` statements checking a particular value it is common to use a `switch` statement instead.
 - You can use a single `const` that has many variables in it.
+
     ```go
     // This
     const (
@@ -768,6 +769,7 @@
     const spanishHelloPrefix = "Hola, "
     const frenchHelloPrefix = "Bonjour, "
     ```
+
 - You can unify arguments of the same type when defining functions. Rather than having `(x int, y int)` you can shorten it to `(x, y int)`.
 - Avoid repetition. `bytes.Buffer` not `bytes.BytesBuffer`, `strings.Reader` not `strings.StringReader`, etc..
 - Writing [benchmarks](https://pkg.go.dev/testing#hdr-Benchmarks) in Go is another first-class feature of the language and it is very similar to writing tests.
@@ -776,3 +778,39 @@
         - `allocs/op`: the number of memory allocations per iteration.
     - Note: By default benchmarks are run sequentially.
     - Check [this](https://dave.cheney.net/2013/06/30/how-to-write-benchmarks-in-go) for more.
+- Extract repeated logic into a helper function to avoid duplication. Define it as a variable inside the function that needs it, or as a standalone function if multiple places need it.
+
+    ```go
+        // WITHOUT helper — same check duplicated in every subtest
+        t.Run("addition", func(t *testing.T) {
+            got := Add(2, 3)
+            want := 5
+            if got != want {
+                t.Errorf("got %d want %d", got, want)
+            }
+        })
+        t.Run("addition with negatives", func(t *testing.T) {
+            got := Add(-2, 3)
+            want := 1
+            if got != want {
+                t.Errorf("got %d want %d", got, want)
+            }
+        })
+
+        // WITH helper — logic lives once, subtests just call it
+        assertAdd := func(t testing.TB, got, want int) {
+            t.Helper()
+            if got != want {
+                t.Errorf("got %d want %d", got, want)
+            }
+        }
+        t.Run("addition", func(t *testing.T) {
+            assertAdd(t, Add(2, 3), 5)
+        })
+        t.Run("addition with negatives", func(t *testing.T) {
+            assertAdd(t, Add(-2, 3), 1)
+        })
+    ```
+
+    - Pass only what the helper needs — if it only reads a value, pass by value, not pointer.
+    - Keep helpers small and focused on one job; if it starts doing too much, it's a sign it should be its own function.
