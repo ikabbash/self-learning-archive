@@ -116,6 +116,8 @@
     ```
 
 - `t.Errorf` is used to report a test failure by logging an error message while continuing execution of the current test, whereas `t.Run` is used to define and execute a subtest (a named test case inside a parent test), allowing better structure, isolation, and reporting of multiple related test cases.
+- `t.Fatal` stops the test immediately when called, unlike `t.Errorf` which logs the failure but continues. Use it when continuing the test after a failure would cause a panic or make subsequent assertions meaningless.
+- `errcheck` is a Go linter that flags any function call that returns an error you didn't handle. The compiler won't catch this since ignoring return values is valid Go, so `errcheck` fills that gap. Install it with `go install github.com/kisielk/errcheck@latest` and run it with `errcheck .` inside your project directory.
 
 ## Variables and Data Types
 - `int16` is a 16-bit signed integer with a range from -32,768 to 32,767. If you try to add 1 to 32,767 (the maximum value for `int16`), it will overflow, wrapping around to the minimum value, -32,768, due to how binary arithmetic works in fixed-size integers. This is called integer overflow.
@@ -692,6 +694,9 @@
     }
     ```
 
+- Go copies values when you pass them to functions/methods, so if you're writing a function that needs to mutate state you'll need it to take a pointer to the thing you want to change.
+    - When a function returns a pointer to something, you need to make sure you check if it's `nil` or you might raise a runtime exception - the compiler won't help you here.
+
 ## Goroutines and Channels
 - Goroutines are a way to launch multiple functions and have them execute concurrently.
     - Concurrency is not the same as parallel execution. Concurrency is about dealing with multiple tasks at the same time, while parallel execution is about performing multiple tasks at the same time using multiple resources.
@@ -814,3 +819,4 @@
 
     - Pass only what the helper needs — if it only reads a value, pass by value, not pointer.
     - Keep helpers small and focused on one job; if it starts doing too much, it's a sign it should be its own function.
+- Use `var` at the package level to define a single source of truth for values used in multiple places — common for errors: `var ErrInsufficientFunds = errors.New("cannot withdraw, insufficient funds")`. This way, renaming or rewording it only requires one change.
