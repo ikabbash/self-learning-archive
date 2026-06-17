@@ -7,6 +7,7 @@
 - [Strings and Runes](#strings-and-runes)
 - [Structs and Methods](#structs-and-methods)
 - [Interfaces](#interfaces)
+- [Maps](#maps)
 - [Pointers](#pointers)
 - [Goroutines and Channels](#goroutines-and-channels)
 - [Generics](#generics)
@@ -607,6 +608,75 @@
 - Use interfaces when you want a single function to work across multiple types, like a `ProcessPayment(p PaymentMethod)` function that handles both `CreditCard` and `PayPal` without separate implementations for each.
 - In Go interface resolution is implicit. If the type you pass in matches what the interface is asking for, it will compile.
 
+## Maps
+- Map is a data structure that stores key-value pairs, similar to a dictionary — the key is the word, the value is the definition. Declared with `map[KeyType]ValueType`.
+
+    ```go
+        // inline initialization
+        dictionary := map[string]string{"test": "this is just a test"}
+    ```
+
+    - The key type must be comparable (e.g. `string`, `int`) — Go needs to check equality between keys to look things up. The value type can be anything, even another map.
+    - You can wrap a map in a custom type and attach methods to it, just like structs: `type Dictionary map[string]string`.
+- A gotcha with maps is that they can be a `nil` value. A `nil` map behaves like an empty map when reading, but attempts to write to a `nil` map will cause a runtime panic. Therefore, you should never initialize a nil map variable:
+
+    ```go
+        var m map[string]string // nil map — writing to this will panic
+    ```
+
+    - Instead, initialize an empty map or use `make`:
+
+        ```go
+            var dictionary = map[string]string{}
+            // OR
+            var dictionary = make(map[string]string)
+        ```
+
+        - Both approaches create an empty hash map and point `dictionary` at it, ensuring you will never get a runtime panic.
+- To look up a value, use `map[key]`. Map lookups can return two values — the value and a boolean indicating whether the key exists:
+
+    ```go
+        definition, ok := d[word]
+        if !ok {
+            return "", errors.New("could not find the word you were looking for")
+        }
+    ```
+
+    - Without `ok`, you can't tell the difference between a key that doesn't exist and a key that exists but has an empty string as its value — both return `""`.
+
+- Common map operations:
+
+    ```go
+        // Add or update
+        dictionary["word"] = "definition"
+
+        // Delete — built-in function, takes the map and the key, returns nothing
+        delete(dictionary, "word")
+    ```
+
+    - Map will not throw an error if the key already exists when adding. Instead it silently overwrites the existing value with the new one — keep this in mind when building an `Add` function that should only insert new entries.
+    - For precise behavior, use `Search` first to check if the key exists before deciding whether to add or reject.
+
+- An interesting property of maps is that you can modify them without passing a pointer (e.g. `&myMap`). This may make them feel like a "reference type", but they are not:
+    - > "A map value is a pointer to a runtime.hmap structure."
+    - So when you pass a map to a function/method, you are indeed copying it, but just the pointer part, not the underlying data structure that contains the data.
+
+- For error handling, define sentinel errors as package-level variables (or constants) so callers can check against them explicitly rather than comparing error strings:
+
+    ```go
+        var ErrNotFound = errors.New("could not find the word you were looking for")
+
+        func (d Dictionary) Search(word string) (string, error) {
+            definition, ok := d[word]
+            if !ok {
+                return "", ErrNotFound
+            }
+            return definition, nil
+        }
+    ```
+
+    - This way, if you ever reword the error message, tests that check `got == ErrNotFound` won't break.
+
 ## Pointers
 - Pointer is a variable that stores the memory address of another variable.
     - Asterisk is used to declare a pointer type and de-reference a pointer, ampersand is used to obtain the memory address of a variable.
@@ -820,3 +890,17 @@
     - Pass only what the helper needs — if it only reads a value, pass by value, not pointer.
     - Keep helpers small and focused on one job; if it starts doing too much, it's a sign it should be its own function.
 - Use `var` at the package level to define a single source of truth for values used in multiple places — common for errors: `var ErrInsufficientFunds = errors.New("cannot withdraw, insufficient funds")`. This way, renaming or rewording it only requires one change.
+- To make a function report an error, change its return type to `error` and return `nil` when successful and `errors.New("message")` when something goes wrong. If the function doesn't need to report errors, just omit the return type entirely.
+
+    ```go
+        // can report errors
+        func (d Dictionary) Update(word, definition string) error {
+            d[word] = definition
+            return nil // nil means no error
+        }
+
+        // no error reporting needed
+        func (d Dictionary) Update(word, definition string) {
+            d[word] = definition
+        }
+    ```
