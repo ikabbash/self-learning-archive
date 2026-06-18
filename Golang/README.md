@@ -119,6 +119,40 @@
 - `t.Errorf` is used to report a test failure by logging an error message while continuing execution of the current test, whereas `t.Run` is used to define and execute a subtest (a named test case inside a parent test), allowing better structure, isolation, and reporting of multiple related test cases.
 - `t.Fatal` stops the test immediately when called, unlike `t.Errorf` which logs the failure but continues. Use it when continuing the test after a failure would cause a panic or make subsequent assertions meaningless.
 - `errcheck` is a Go linter that flags any function call that returns an error you didn't handle. The compiler won't catch this since ignoring return values is valid Go, so `errcheck` fills that gap. Install it with `go install github.com/kisielk/errcheck@latest` and run it with `errcheck .` inside your project directory.
+- Dependency injection means passing a dependency into a function rather than hardcoding it inside. Instead of a function always printing to stdout, accept an `io.Writer` so the caller decides where output goes — stdout in production, a `bytes.Buffer` in tests.
+
+```go
+    // hardcoded — impossible to test the output
+    func Greet(name string) {
+        fmt.Printf("Hello, %s", name)
+    }
+
+    // injectable — caller controls where output goes
+    func Greet(writer io.Writer, name string) {
+        fmt.Fprintf(writer, "Hello, %s", name)
+    }
+
+    // in tests: capture output in a buffer
+    buffer := bytes.Buffer{}
+    Greet(&buffer, "Chris")
+    fmt.Println(buffer.String()) // "Hello, Chris"
+
+    // in production: print to stdout
+    Greet(os.Stdout, "Chris")
+```
+
+    - If a function is hard to test, it usually means a dependency is hardwired inside it. Injecting it via an interface fixes that.
+    - DI also separates concerns — the function focuses on *generating* the output, not on *where it goes*.
+- `io.Writer` is a built-in interface from the standard library with a single method `Write(p []byte) (n int, err error)`. It represents anything you can write data to — a buffer, a file, stdout, an HTTP response, etc. Getting familiar with it (and interfaces like it) lets you write functions that work in many contexts without changing their code.
+
+```go
+    type Writer interface {
+        Write(p []byte) (n int, err error)
+    }
+```
+
+    - `os.Stdout`, `bytes.Buffer`, and `http.ResponseWriter` all implement `io.Writer` — they all have a `Write` method.
+    - `fmt.Printf` is just `fmt.Fprintf(os.Stdout, ...)` under the hood. Swap `os.Stdout` for any `io.Writer` and you control where the output goes.
 
 ## Variables and Data Types
 - `int16` is a 16-bit signed integer with a range from -32,768 to 32,767. If you try to add 1 to 32,767 (the maximum value for `int16`), it will overflow, wrapping around to the minimum value, -32,768, due to how binary arithmetic works in fixed-size integers. This is called integer overflow.
