@@ -2,6 +2,9 @@
 
 - [Packages and Modules](#packages-and-modules)
 - [Testing](#testing)
+    - [What Tests Are](#what-tests-are)
+    - [Golang's Testing](#golangs-testing)
+    - [Mocking](#mocking)
 - [Variables and Data Types](#variables-and-data-types)
 - [Arrays and Slices](#arrays-and-slices)
 - [Strings and Runes](#strings-and-runes)
@@ -12,7 +15,7 @@
 - [Goroutines and Channels](#goroutines-and-channels)
 - [Generics](#generics)
 - [fmt Package](#fmt-package)
-- [tips](#tips)
+- [Tips](#tips)
 
 ## Packages and Modules
 - A package is a folder that contains a bunch of go files, a bunch of packages is known as a module, defined by a `go.mod` file.
@@ -58,6 +61,40 @@
         ```
 
 ## Testing
+
+### What Tests Are
+- A test's job is to **capture behavior** so any future change that breaks it gets caught immediately — not by a user in production. Think of tests as a safety net: you change something, tests run, a failure tells you exactly what broke and where.
+    - Example: an API endpoint should return `200` with user data → you change an auth middleware → test fails → you know before shipping.
+    - Example: a record should persist in the DB after a form submission → you refactor the service layer → test fails → the bug never reaches production.
+    - Example: a frontend component expects `{ name: string }` but the API now returns `{ fullName: string }` → test fails → caught before the user sees a broken UI.
+- Tests are not just about catching bugs — they also **document behavior**. A well-written test tells the next developer (or future you) exactly what a function is supposed to do without reading the implementation.
+- **Unit tests** test one thing in isolation — a single function or method, no real DB, no real network. They are fast, focused, and should make up the majority of your test suite.
+    - Write unit tests for: pure logic, calculations, transformations, validation rules, error handling.
+    - Ask: *if I break this function, does this test fail?* If not, the test isn't testing the right thing.
+- **Integration tests** test how multiple parts work together — your code + a real DB, or your code + a real HTTP handler. They are slower and fewer, but catch wiring mistakes unit tests can't.
+    - Write integration tests for: DB queries actually persisting data, HTTP handlers returning correct responses end-to-end, services talking to each other correctly.
+    - Don't use integration tests as a substitute for unit tests — they're too slow and too broad to be your first line of defense.
+    - Integration tests are usually done on a temporary environment.
+- **How to aim your tests**: test behavior, not implementation. Ask *what should this do?*, not *how does this do it?*
+    - Good: `assert the returned total is correct given these inputs`
+    - Bad: `assert that this specific internal function was called with these exact arguments`
+    - If refactoring your code forces you to rewrite your tests, your tests are aimed too low.
+- **Plan your tests around failure scenarios**, not just the happy path. For every function ask: what happens when input is invalid? What if the dependency fails? What if the value is empty or zero?
+    - Happy path: user deposits `10 BTC` → balance is `10 BTC`.
+    - Failure path: user withdraws more than balance → error is returned, balance unchanged.
+- **Test coverage is a guide, not a goal.** 100% coverage doesn't mean your code is bug-free — it just means every line ran during tests. A poorly written test can execute a line without actually asserting anything meaningful.
+    - Aim for coverage of behavior, not lines.
+- **How to catch failures effectively**:
+    - Error messages should tell you *what was expected vs what was got* — vague failures waste time.
+    - Use `t.Fatal` when a failure makes all subsequent assertions meaningless (e.g. if parsing failed, don't keep asserting on the result).
+    - Use `t.Errorf` when you want to report a failure but still finish running the rest of the test.
+- **The testing lifecycle in a project**:
+    - Write the test before or alongside the code (TDD) — this forces you to think about the interface before the implementation.
+    - Unit tests run on every save or commit — they must be fast.
+    - Integration tests run on CI before merging — slower is acceptable here.
+    - Never ship code that has failing tests — a failing test is a known bug you chose to ignore.
+
+### Golang's Testing
 - Go's built-in support for unit testing makes it easier to test as you go, [check it out](https://go.dev/doc/tutorial/add-a-test).
     - Check [this article](https://blog.jetbrains.com/go/2022/11/22/comprehensive-guide-to-testing-in-go/) to see testing examples in Go.
 - Test Driven Development (TDD) discipline: Write a failing test, make the compiler pass, run the test, write enough code to make the test pass, refactor.
@@ -155,7 +192,6 @@
     - `fmt.Printf` is just `fmt.Fprintf(os.Stdout, ...)` under the hood. Swap `os.Stdout` for any `io.Writer` and you control where the output goes.
 
 ### Mocking
-
 - Mocking is replacing a real dependency with a fake one you control during tests so you can test your logic in isolation. Use it when a dependency is slow (e.g. `time.Sleep`), unreliable (e.g. external APIs), or hard to set up (e.g. databases).
     - **Pros**: fast tests, reliable results, ability to test edge cases (e.g. simulate a service failure) that are hard to trigger with real dependencies.
     - **Cons**: overusing it leads to tests tightly coupled to implementation details — you end up testing *how* the code works rather than *what it does*, making refactoring painful.
