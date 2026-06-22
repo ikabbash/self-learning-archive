@@ -154,6 +154,38 @@
     - `os.Stdout`, `bytes.Buffer`, and `http.ResponseWriter` all implement `io.Writer` — they all have a `Write` method.
     - `fmt.Printf` is just `fmt.Fprintf(os.Stdout, ...)` under the hood. Swap `os.Stdout` for any `io.Writer` and you control where the output goes.
 
+### Mocking
+
+- Mocking is replacing a real dependency with a fake one you control during tests so you can test your logic in isolation. Use it when a dependency is slow (e.g. `time.Sleep`), unreliable (e.g. external APIs), or hard to set up (e.g. databases).
+    - **Pros**: fast tests, reliable results, ability to test edge cases (e.g. simulate a service failure) that are hard to trigger with real dependencies.
+    - **Cons**: overusing it leads to tests tightly coupled to implementation details — you end up testing *how* the code works rather than *what it does*, making refactoring painful.
+    - **When to avoid it**: if you need many mocks just to test one thing, that's a signal your code has too many responsibilities or poor abstraction — rethink the design, not the tests.
+
+- Mocking is only possible through **dependency injection** — if a dependency is hardwired inside a function, you can't swap it out. Define dependencies as interfaces and inject them so tests can pass a fake and production can pass the real thing.
+
+- A **spy** is a type of mock that records how it was used — how many times it was called, in what order, with what arguments. Use spies when you need to assert *behavior*, not just output.
+
+```go
+    // real sleeper used in production
+    type DefaultSleeper struct{}
+    func (d *DefaultSleeper) Sleep() { time.Sleep(1 * time.Second) }
+
+    // spy used in tests — instant, records calls
+    type SpySleeper struct{ Calls int }
+    func (s *SpySleeper) Sleep() { s.Calls++ }
+
+    // assert it was called the right number of times
+    if spySleeper.Calls != 3 {
+        t.Errorf("wanted 3 calls, got %d", spySleeper.Calls)
+    }
+```
+
+    - A single spy can implement multiple interfaces at once — useful when you need to track operations across two dependencies in one ordered list.
+
+- If your mocking code is becoming complicated or you need more than 3 mocks just to test one thing, that's a red flag — your code likely has too many responsibilities. Break it apart.
+    - Test *what the code does* (behavior), not *how it does it* (implementation). If refactoring forces you to rewrite many tests, your tests are too coupled to implementation details.
+- When faced with a non-trivial problem, break it into thin vertical slices — get to *working software backed by tests* as fast as possible before adding complexity. This avoids rabbit holes and big-bang implementations that are hard to debug.
+
 ## Variables and Data Types
 - `int16` is a 16-bit signed integer with a range from -32,768 to 32,767. If you try to add 1 to 32,767 (the maximum value for `int16`), it will overflow, wrapping around to the minimum value, -32,768, due to how binary arithmetic works in fixed-size integers. This is called integer overflow.
 
